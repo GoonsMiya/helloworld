@@ -1,0 +1,62 @@
+<script>
+    // 阻止 F12、Ctrl+Shift+I、Ctrl+U 等快捷鍵
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+        alert("此操作已被禁止！");
+        return false;
+      }
+    });
+  
+    // 禁止右鍵選單
+    document.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      alert("禁止右鍵檢視原始碼！");
+    });
+  
+    // 檢查是否開啟 DevTools（透過尺寸偵測）
+    setInterval(function () {
+      if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+        document.body.innerHTML = "<h1 style='color:red;'>禁止使用開發者工具！</h1>";
+      }
+    }, 1000);
+  </script>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Input Check</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .result { margin-top: 20px; color: blue; }
+  </style>
+</head>
+<body>
+  <h1><span style="color: white;">1.</span>請輸入學習程式語言第一次接觸到的文字</h1>
+  <p style="color: white;">2.o ➜ s</p>
+  <span style="color: white;">3.</span><input type="text" id="inputText" placeholder="請輸入..."/>
+  <button onclick="checkInput()">確認</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    function checkInput() {
+      const input = document.getElementById("inputText").value;
+      const result = document.getElementById("result");
+
+      if (input === "Hello World!") {
+        result.textContent = "跳到 error.html";
+        setTimeout(() => { window.location.href = "error.html"; }, 1000);
+      } else if (input === "Hells Wsrld!") {
+        result.textContent = "跳到 share.html";
+        setTimeout(() => { window.location.href = "share.html"; }, 1000);
+      } else {
+        result.textContent = "請重新輸入";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!-- <script>
+    // 阻止 F12、Ctrl+Shift+I、Ctrl+U 等快捷鍵
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+        alert("此操作已被禁止！");
+        return false;
+      }
+    });
+  
+    // 禁止右鍵選單
+    document.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      alert("禁止右鍵檢視原始碼！");
+    });
+  
+    // 檢查是否開啟 DevTools（透過尺寸偵測）
+    setInterval(function () {
+      if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+        document.body.innerHTML = "<h1 style='color:red;'>禁止使用開發者工具！</h1>";
+      }
+    }, 1000);
+  </script> -->
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>RSA Page</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
+    </head>
+    <body>
+      <h1>RSA 加密驗證</h1>
+    
+      <h3>拿取上一關的輸入值，依照下 Public Key 進行 RSA 加密：</h3>
+      <pre id="pubKey"></pre>
+    
+      <input type="text" id="finalInput" placeholder="請貼上加密後的結果">
+      <button onclick="checkFinal()">確認</button>
+      <p id="finalResult"></p>
+      <img id="secretImage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkzVpm7zVZRT9UAvE39wamJgiI2GudEFSlRpdlLoJBw&s" style="display:none; margin-top: 20px;" alt="秘密圖片">
+    
+      <script>
+        const privateKey = `-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDKCaBxMsgbynT5ecPTVc13OXlPMqaMySvNaRwV0HLhn6J7cEkb
+K3K+UwDNxNsCb2DwG1zQMpkk7dDEn0pfHRW1CkYL4gZWVwlxBoCHqbKRLsDJv9Ny
+MHgkpg2Lzn24NSW+z7AVGndEp1hXBr32acMnje2kGfUOE0mqCxlSvUqkPwIDAQAB
+AoGAYdvi1iGKMofQO8xCUTlUoYR5oSY/7J4+NKrOOzSxiF5ZhZ+gEWRsmgo7L+/D
+Qv0uv24JeSCg8/WqsqoTDFnamm4sEXGLF84NvatpSAXzKAtIw6vUaiIOOXtrKmZA
+DacDQq94ABli5oiXrnX14QRW40fkt+peXiP7COj5V/iqgiUCQQDObsYa2c6gywip
+fYVshO0NZfxBEghJPLXeBn5drJIx8g2lNvMc454IVkUOz6kxFkb+yLiMQDNz/SDL
+D82N1zt7AkEA+oywl+QBiguN5BMjeLS8bfZYiXHLuTyS1lQ5e32tGlHmjlgentRN
+PaE7ymMYD8CFjSoTMdDNS/IIFCSwwzgtDQJAR2KpIQnm2VW8thfQ9tj0vKhi1gGt
+Wd4jqhamxi/yElF5BIP/CCNyN8HVeay3/mCMxniU0PM2l8qV94KMe5tNVwJBAIaT
+/172x6Tgo+x4Izt4ySW/hrr89tKeqLibMO0WCl7y0wZuarQhkQOjkTwakhgT7yhu
+CzVc1IkQjipTsuaJTBkCQQDE2j5dK1dVCS69HPj/Bu6raFvLT/X7BmdcBz6Ul17P
+SlaqM/Z2uO5X9coJNA29ZadlhRR+yd2A26xUk9I8mU3T
+-----END RSA PRIVATE KEY-----
+`;
+    
+        const publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKCaBxMsgbynT5ecPTVc13OXlP
+MqaMySvNaRwV0HLhn6J7cEkbK3K+UwDNxNsCb2DwG1zQMpkk7dDEn0pfHRW1CkYL
+4gZWVwlxBoCHqbKRLsDJv9NyMHgkpg2Lzn24NSW+z7AVGndEp1hXBr32acMnje2k
+GfUOE0mqCxlSvUqkPwIDAQAB
+-----END PUBLIC KEY-----
+`;
+    
+        document.getElementById("pubKey").textContent = publicKey;
+    
+        function checkFinal() {
+          const input = document.getElementById("finalInput").value;
+          const decrypt = new JSEncrypt();
+          decrypt.setPrivateKey(privateKey);
+          const decrypted = decrypt.decrypt(input);
+          console.log(decrypt)
+          console.log(decrypted)
+          if (decrypted === "Hells Wsrld!") {
+            document.getElementById("finalResult").textContent = "驗證成功！已解密內容：" + decrypted;
+            document.getElementById("secretImage").style.display = "block";
+          } else {
+            document.getElementById("finalResult").textContent = "驗證失敗！";
+            document.getElementById("secretImage").style.display = "none";
+          }
+        }
+      </script>
+    </body>
+    </html>

@@ -1,0 +1,37 @@
+<script>
+    // 阻止 F12、Ctrl+Shift+I、Ctrl+U 等快捷鍵
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+        alert("此操作已被禁止！");
+        return false;
+      }
+    });
+  
+    // 禁止右鍵選單
+    document.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      alert("禁止右鍵檢視原始碼！");
+    });
+  
+    // 檢查是否開啟 DevTools（透過尺寸偵測）
+    setInterval(function () {
+      if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+        document.body.innerHTML = "<h1 style='color:red;'>禁止使用開發者工具！</h1>";
+      }
+    }, 1000);
+  </script>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error</title>
+</head>
+<body>
+  <h1>404 Not Found</h1>
+</body>
+</html>
